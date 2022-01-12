@@ -1,7 +1,20 @@
+import { useState } from 'react';
 import '../styles/App.scss';
 import '../styles/main.scss';
 
 function App() {
+  const [counter, setCounter]= useState(0);
+  const numberOfErrors= (ev)=>{
+    ev.preventDefault();
+    if(ev.keyCode === 8){
+      setCounter(counter)
+      console.log(counter);
+    }else{
+    setCounter(counter+1);
+    }
+    
+  }
+
   return (
     <div className="page">
       <header>
@@ -37,6 +50,7 @@ function App() {
           <form className="form">
             <label className="title" htmlFor="last-letter">Escribe una letra:</label>
             <input
+              onKeyUp= {numberOfErrors}
               autocomplete="off"
               className="form__input"
               maxlength="1"
@@ -46,7 +60,7 @@ function App() {
             />
           </form>
         </section>
-        <section className="dummy error-5">
+        <section className={`dummy error-${counter}`}>
           <span className="error-13 eye"></span>
           <span className="error-12 eye"></span>
           <span className="error-11 line"></span>
