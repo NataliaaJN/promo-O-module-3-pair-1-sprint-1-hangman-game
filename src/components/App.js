@@ -4,6 +4,9 @@ import '../styles/main.scss';
 
 function App() {
   const [counter, setCounter]= useState(0);
+  const [lastLetter, setLastLetter] = useState('');
+  const letters = [];
+
   const numberOfErrors= (ev)=>{
     ev.preventDefault();
     if(ev.keyCode === 8){
@@ -12,7 +15,14 @@ function App() {
     }else{
     setCounter(counter+1);
     }
-    
+  }
+
+  const patata= (ev) => {
+    ev.preventDefault();
+
+    setLastLetter(ev.target.value);
+    letters.push(lastLetter);
+    console.log(letters);
   }
 
   return (
@@ -51,9 +61,11 @@ function App() {
             <label className="title" htmlFor="last-letter">Escribe una letra:</label>
             <input
               onKeyUp= {numberOfErrors}
-              autocomplete="off"
+              onChange={patata}
+              value={lastLetter}
+              autoComplete="off"
               className="form__input"
-              maxlength="1"
+              maxLength="1"
               type="text"
               name="last-letter"
               id="last-letter"
