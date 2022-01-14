@@ -5,7 +5,9 @@ import '../styles/main.scss';
 function App() {
   const [counter, setCounter]= useState(0);
   const [lastLetter, setLastLetter] = useState('');
-  const letters = [];
+  const [userLetters, setUserLetters]= useState([]);
+
+ // const letters = [];
 
   const numberOfErrors= (ev)=>{
     ev.preventDefault();
@@ -17,12 +19,20 @@ function App() {
     }
   }
 
-  const patata= (ev) => {
+  const handleUserInput= (ev) => {
     ev.preventDefault();
-
+    if(ev.target.pattern=== "^[a-zA-ZáäéëíïóöúüÁÄÉËÍÏÓÖÚÜñÑ]?$"){
+      
+    }
     setLastLetter(ev.target.value);
-    letters.push(lastLetter);
-    console.log(letters);
+    
+    // letters.push(lastLetter);
+    // console.log(letters);
+
+    setUserLetters(ev.keyCode===8 ? [...userLetters] : [...userLetters, lastLetter]);
+    //setUserLetters(lastLetter);
+
+
   }
 
   return (
@@ -61,7 +71,7 @@ function App() {
             <label className="title" htmlFor="last-letter">Escribe una letra:</label>
             <input
               onKeyUp= {numberOfErrors}
-              onChange={patata}
+              onChange={handleUserInput}
               value={lastLetter}
               autoComplete="off"
               className="form__input"
