@@ -3,37 +3,53 @@ import '../styles/App.scss';
 import '../styles/main.scss';
 
 function App() {
-  const [counter, setCounter]= useState(0);
+  const [errors, setErrors]= useState([]);
   const [lastLetter, setLastLetter] = useState('');
   const [userLetters, setUserLetters]= useState([]);
 
  // const letters = [];
+ const word = "katacroker"; 
+//  const wrong = "fqhpx";
 
-  const numberOfErrors= (ev)=>{
-    ev.preventDefault();
-    if(ev.keyCode === 8){
-      setCounter(counter)
-      console.log(counter);
-    }else{
-    setCounter(counter+1);
-    }
-  }
+// const numberOfErrors = (ev) => {
+//   ev.preventDefault();
+// }
+
+//  const numberOfErrors = (ev) => {
+//   ev.preventDefault();
+//   if (ev.keyCode === 8) {
+//     setErrors(errors);
+//   } else {
+//     setErrors(errors + 1);
+//   }
+// };
 
   const handleUserInput= (ev) => {
     ev.preventDefault();
-    if(ev.target.pattern=== "^[a-zA-ZáäéëíïóöúüÁÄÉËÍÏÓÖÚÜñÑ]?$"){
-      
+    const lastLetterValue = ev.target.value;
+    if (lastLetterValue.match('^[a-zA-ZñÑ]?$')) {
+      setLastLetter(lastLetterValue);
+      if(lastLetterValue !== '') {
+        if (word.includes(lastLetterValue)) {
+        setUserLetters([...userLetters, lastLetterValue]);
+      } else {
+        setErrors([...errors, lastLetterValue]);
+      }
     }
-    setLastLetter(ev.target.value);
-    
-    // letters.push(lastLetter);
-    // console.log(letters);
-
-    setUserLetters(ev.keyCode===8 ? [...userLetters] : [...userLetters, lastLetter]);
-    //setUserLetters(lastLetter);
-
-
+    setLastLetter(lastLetterValue);
   }
+  };
+
+  const renderSolutionLetters = () => {
+    const wordLetter = word.split('');
+    return wordLetter.map((letter, index) => {
+      if (userLetters.includes(letter)) {
+        return (<li className="letter" key={index}>{letter}</li>);
+      } else {
+        return (<li className="letter" key={index}></li>)
+      }
+    });
+  };
 
   return (
     <div className="page">
@@ -45,16 +61,7 @@ function App() {
           <div className="solution">
             <h2 className="title">Solución:</h2>
             <ul className="letters">
-              <li className="letter">k</li>
-              <li className="letter">a</li>
-              <li className="letter"></li>
-              <li className="letter">a</li>
-              <li className="letter">k</li>
-              <li className="letter">r</li>
-              <li className="letter"></li>
-              <li className="letter">k</li>
-              <li className="letter">e</li>
-              <li className="letter">r</li>
+              {renderSolutionLetters()}
             </ul>
           </div>
           <div className="error">
@@ -70,7 +77,7 @@ function App() {
           <form className="form">
             <label className="title" htmlFor="last-letter">Escribe una letra:</label>
             <input
-              onKeyUp= {numberOfErrors}
+              // onKeyUp= {numberOfErrors}
               onChange={handleUserInput}
               value={lastLetter}
               autoComplete="off"
@@ -82,7 +89,7 @@ function App() {
             />
           </form>
         </section>
-        <section className={`dummy error-${counter}`}>
+        <section className={`dummy error-${errors}`}>
           <span className="error-13 eye"></span>
           <span className="error-12 eye"></span>
           <span className="error-11 line"></span>
